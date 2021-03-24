@@ -5,9 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class GreetingServiceTest {
 
@@ -24,7 +26,7 @@ class GreetingServiceTest {
 
     @Test
     void testGreeting() {
-        String expectedMessage = "Hello World";
+        String expectedMessage = "Hello World 2";
         assertEquals(expectedMessage, greetingService.greeting());
     }
 }
