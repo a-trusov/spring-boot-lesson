@@ -14,7 +14,6 @@ class GreetingServiceTest {
     @Autowired
     private GreetingService greetingService;
 
-
     @BeforeEach
     void setUp() {
     }
