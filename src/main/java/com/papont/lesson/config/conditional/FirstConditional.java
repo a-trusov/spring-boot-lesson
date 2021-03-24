@@ -1,4 +1,4 @@
-package com.papont.lesson.conditional;
+package com.papont.lesson.config.conditional;
 
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
