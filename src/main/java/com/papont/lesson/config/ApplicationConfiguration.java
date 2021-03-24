@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 
 @Conditional(FirstConditional.class)
-
 @Configuration
 public class ApplicationConfiguration {
 
