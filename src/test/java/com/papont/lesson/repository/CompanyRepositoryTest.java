@@ -1,28 +1,23 @@
 package com.papont.lesson.repository;
 
+import com.papont.lesson.IntegrationTestBase;
 import com.papont.lesson.entity.Company;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@ActiveProfiles("test")
-@Transactional
-@SpringBootTest
-class CompanyRepositoryTest {
+class CompanyRepositoryTest extends IntegrationTestBase {
 
     private static final Integer APPLE_ID = 1;
 
     @Autowired
-    private CompanyRepository companyRepository;
+    private CompanyRepository repository;
 
     @BeforeEach
     void setUp() {
@@ -34,7 +29,7 @@ class CompanyRepositoryTest {
 
     @Test
     void testGetById() {
-        Optional<Company> company = companyRepository.findById(APPLE_ID);
+        Optional<Company> company = repository.findById(APPLE_ID);
         assertTrue(company.isPresent());
         company.ifPresent(entity -> {
             assertEquals("Apple", entity.getName());
@@ -47,7 +42,7 @@ class CompanyRepositoryTest {
                 .name("Fitbit")
                 .build();
 
-        companyRepository.save(company);
+        repository.save(company);
 
         assertNotNull(company.getId());
     }
