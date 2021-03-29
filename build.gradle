@@ -37,6 +37,8 @@ dependencies {
 
     compile 'com.querydsl:querydsl-jpa'
     annotationProcessor 'com.querydsl:querydsl-apt'
+
+    compile 'org.flywaydb:flyway-core'
 }
 
 querydsl {

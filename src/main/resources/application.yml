@@ -6,3 +6,12 @@ spring:
     password: postgres
     url: jdbc:postgresql://localhost:5432/company
     driver-class-name:  org.postgresql.Driver
+
+# V(version)__description.sql
+  flyway:
+#    schemas: test_schema
+
+    #default
+    schemas: public
+    baseline-on-migrate: true
+#    baseline-version: 1
