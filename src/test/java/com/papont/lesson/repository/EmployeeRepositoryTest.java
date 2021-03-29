@@ -5,6 +5,8 @@ import com.papont.lesson.dto.EmployeeFilter;
 import com.papont.lesson.entity.Employee;
 import com.papont.lesson.projection.EmployeeNameView;
 import com.papont.lesson.projection.EmployeeNativeView;
+import com.papont.lesson.utils.QPredicates;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 import static com.papont.lesson.entity.QEmployee.employee;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -80,13 +83,13 @@ class EmployeeRepositoryTest extends IntegrationTestBase {
                 .firstName("ivaN")
                 .build();
 
-        if (filter.getFirstName() != null) {
-            //add predicate
-        }
-
-        if (filter.getLastName() != null) {
-            //add predicate
-        }
+//        if (filter.getFirstName() != null) {
+//            //add predicate
+//        }
+//
+//        if (filter.getLastName() != null) {
+//            //add predicate
+//        }
 
         List<Employee> employees = repository.findByFilter(filter);
         assertThat(employees, hasSize(1));
@@ -99,4 +102,24 @@ class EmployeeRepositoryTest extends IntegrationTestBase {
         Page<Employee> page = repository.findAll(predicate, Pageable.unpaged());
         assertThat(page.getContent(), hasSize(1));
     }
+
+    @Test
+    void testQPredicates() {
+        EmployeeFilter filter = EmployeeFilter.builder()
+                .firstName("ivaN")
+                .salary(1000)
+                .build();
+
+        //на уровне сервисов
+        final var predicate = QPredicates.builder()
+                .add(filter.getFirstName(), employee.firstName::containsIgnoreCase)
+                .add(filter.getLastName(), employee.lastName::containsIgnoreCase)
+                .add(filter.getSalary(), employee.salary::goe)
+                .buildAnd();
+
+
+        Iterable<Employee> result = repository.findAll(predicate);
+        assertTrue(result.iterator().hasNext());
+    }
+
 }
