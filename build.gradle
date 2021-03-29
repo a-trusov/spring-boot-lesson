@@ -5,6 +5,7 @@ plugins {
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
+apply from: './versions.gradle'
 
 sourceSets {
     main {
@@ -39,6 +40,10 @@ dependencies {
     annotationProcessor 'com.querydsl:querydsl-apt'
 
     compile 'org.flywaydb:flyway-core'
+
+    // https://mvnrepository.com/artifact/org.testcontainers/postgresql
+    testCompile "org.testcontainers:postgresql:${versions.postgresContainer}"
+
 }
 
 querydsl {
