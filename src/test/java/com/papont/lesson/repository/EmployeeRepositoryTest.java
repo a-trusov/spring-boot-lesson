@@ -1,25 +1,27 @@
 package com.papont.lesson.repository;
 
 import com.papont.lesson.IntegrationTestBase;
+import com.papont.lesson.dto.EmployeeFilter;
 import com.papont.lesson.entity.Employee;
 import com.papont.lesson.projection.EmployeeNameView;
 import com.papont.lesson.projection.EmployeeNativeView;
-import org.hamcrest.MatcherAssert;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.papont.lesson.entity.QEmployee.employee;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EmployeeRepositoryTest extends IntegrationTestBase {
 
@@ -73,8 +75,28 @@ class EmployeeRepositoryTest extends IntegrationTestBase {
     }
 
     @Test
-    void testFindCustomarQuery() {
-        List<Employee> employees = repository.findCustomQuery();
-        assertThat(employees, hasSize(0));
+    void testFindByFilterQuery() {
+        EmployeeFilter filter = EmployeeFilter.builder()
+                .firstName("ivaN")
+                .build();
+
+        if (filter.getFirstName() != null) {
+            //add predicate
+        }
+
+        if (filter.getLastName() != null) {
+            //add predicate
+        }
+
+        List<Employee> employees = repository.findByFilter(filter);
+        assertThat(employees, hasSize(1));
+    }
+
+    @Test
+    void testQueryDslPredicates() {
+        BooleanExpression predicate = employee.firstName.containsIgnoreCase("ivaN")
+                .and(employee.salary.goe(1000));
+        Page<Employee> page = repository.findAll(predicate, Pageable.unpaged());
+        assertThat(page.getContent(), hasSize(1));
     }
 }
